@@ -54,7 +54,11 @@ public class LoginServiceImpl implements LoginService {
 			loginEntity.setPastTime(System.currentTimeMillis());
 			loginEntity.setUser(userEntity);
 			//4、把上述数据都存放在Redis中
-			RedisUtils.putLogin(loginEntity);
+			try{
+				RedisUtils.putLogin(loginEntity);
+			}catch(Exception e){
+				System.out.println("Redis异常");
+			}
 			//5、返回登陆成功，并把sessionId
 			responseMap.put("sessionId", sessionId);
 		}else{

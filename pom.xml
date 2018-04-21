@@ -8,6 +8,7 @@
 	<name>security Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<properties>
+		<cors-filter.version>1.9.1</cors-filter.version>
 		<jetty.version>8.1.10.v20130312</jetty.version>
 		<spring.version>4.2.6.RELEASE</spring.version>
 		<mybatis.version>3.2.1</mybatis.version>
@@ -22,6 +23,13 @@
 		<poi-ooxml-schemas.version>3.7</poi-ooxml-schemas.version>
 	</properties>
 	<dependencies>
+		<!-- 添加解决跨域问题的jar包 -->
+		<dependency>
+			<groupId>com.thetransactioncompany</groupId>
+			<artifactId>cors-filter</artifactId>
+			<version>${cors-filter.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>

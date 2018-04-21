@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="app.wllfengshu.dao.UserDao" >
+
+	<resultMap id="userList" type="app.wllfengshu.entity.User">
+        <id column="id" property="id" />
+        <result column="email" property="email" />
+        <result column="sex" property="sex" />
+        <result column="last_activity_time" property="last_activity_time" />
+        <result column="login_name" property="login_name" />
+        <result column="domain" property="domain" />
+        <result column="phone" property="phone" />
+        <result column="status" property="status" />
+        <result column="tenant_id" property="tenant_id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+    </resultMap>
+
+	<select id="getUsers" parameterType="string" resultMap="userList" >
+		SELECT 
+			*
+		FROM 
+			t_user u
+		WHERE 
+			u.domain = #{domain}
+	</select>
+
+	<insert id="addUser" parameterType="app.wllfengshu.entity.User">  
+        insert into 
+        	t_user
+        values
+        	(#{user.id},#{user.email},#{user.sex},#{user.last_activity_time},#{user.login_name},#{user.domain},#{user.phone},#{user.status},#{user.tenant_id},#{user.username},#{user.password})
+    </insert>
+
+	<select id="getUser" parameterType="String" resultType="app.wllfengshu.entity.User" >
+		SELECT 
+			*
+		FROM 
+			t_user u
+		WHERE 
+			u.id = #{id}
+	</select>
+	
+	<update id="updateUser" parameterType="app.wllfengshu.entity.User" >  
+        update
+        	t_user
+        set
+        	email = #{user.email}, sex = #{user.sex}, last_activity_time = #{user.last_activity_time} ,login_name = #{user.login_name}, phone = #{user.phone}, status = #{user.status} , password = #{user.password}
+        where
+        	id = #{user.id}
+    </update>
+    
+    <delete id="deleteUser" parameterType="String">  
+        delete from
+        	t_user
+        where 
+        	id = #{id}  
+    </delete>
+</mapper>

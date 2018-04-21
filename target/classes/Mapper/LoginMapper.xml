@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="app.wllfengshu.dao.LoginDao" >
+
+	<!-- 结果映射 -->  
+<resultMap type="app.wllfengshu.entity.User" id="userBean" autoMapping="true">  
+   <id column="id" property="id" />
+   <result column="email" property="email" />
+   <result column="sex" property="sex" />
+   <result column="last_activity_time" property="last_activity_time" />
+   <result column="login_name" property="login_name" />
+   <result column="domain" property="domain" />
+   <result column="phone" property="phone" />
+   <result column="status" property="status" />
+   <result column="tenant_id" property="tenant_id" />
+   <result column="username" property="username" />
+   <result column="password" property="password" />
+   <collection property="roles" ofType="app.wllfengshu.entity.Role">  
+        <id column="id" property="id"/>  
+        <result column="role_explain" property="role_explain"/>  
+        <result column="role_name" property="role_name"/>  
+        <result column="status" property="status"/>  
+    </collection>  
+</resultMap>  
+
+	<select id="login" parameterType="string" resultMap="userBean"  resultType="app.wllfengshu.entity.User" >
+		SELECT 
+			u.*,r.*
+		FROM 
+			t_user u
+		LEFT JOIN
+			t_role r
+		ON
+			u.id=r.user_id
+		WHERE 
+			u.username = #{username} AND u.password = #{password}
+	</select>
+
+</mapper>

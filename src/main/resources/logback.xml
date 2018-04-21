@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="10 seconds" debug="true">
+		<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%date [%thread] %-5level %logger{80}- %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="trace"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<File>/home/listen/Apps/logs/${HOSTNAME}/logs/trace.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>/home/listen/Apps/logs/${HOSTNAME}/logs/trace-%d{yyyy-MM-dd}-%i.log.zip
+			</FileNamePattern>
+			<MaxHistory>7</MaxHistory>
+			<TimeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<MaxFileSize>10MB</MaxFileSize>
+			</TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date [%thread] %-5level %logger{80}- %msg%n</pattern>
+		</layout>
+	</appender>
+	
+	<appender name="error"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<File>/home/listen/Apps/logs/${HOSTNAME}/logs/error.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>/home/listen/Apps/logs/${HOSTNAME}/logs/error-%d{yyyy-MM-dd}-%i.log.zip</FileNamePattern>
+			<MaxHistory>7</MaxHistory>
+			<TimeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<MaxFileSize>10MB</MaxFileSize>
+			</TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%date [%thread] %-5level %logger{80}- %msg%n</pattern>
+		</layout>
+	</appender>
+
+
+	<!-- name值可以是包名或具体的类名：该包（包括子包）下的类或该类将采用此logger -->
+	<logger name="app.wellcloud" level="trace">
+		<appender-ref ref="trace" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<!-- root的默认level是DEBUG 
+	<root level="trace">
+		<appender-ref ref="STDOUT" />
+	</root>-->
+</configuration>

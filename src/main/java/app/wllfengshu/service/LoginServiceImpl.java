@@ -59,11 +59,11 @@ public class LoginServiceImpl implements LoginService {
 			}catch(Exception e){
 				System.out.println("Redis异常");
 			}
-			//5、返回登陆成功，并把sessionId
-			responseMap.put("sessionId", sessionId);
+			//5、返回登陆成功，并把user相关信息都返回
+			responseMap.put("loginEntity", loginEntity);
 		}else{
 			//5、直接返回失败
-			responseMap.put("sessionId", "");
+			responseMap.put("loginEntity", "");
 		}
 		responseMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
 		return gson.toJson(responseMap);

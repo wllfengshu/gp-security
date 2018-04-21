@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import app.wllfengshu.entity.Login;
+import app.wllfengshu.exception.NotAcceptableException;
 import redis.clients.jedis.Jedis;
 
 
@@ -32,10 +33,16 @@ public class RedisUtils {
 	 * @title 通过sessionId获取登陆的bean
 	 * @param sessionId
 	 * @return
+	 * @throws NotAcceptableException 
 	 */
-	public static Login getLogin(String sessionId) {
+	public static Login getLogin(String sessionId) throws NotAcceptableException {
 		byte[] byt=jedis.get(sessionId.getBytes());
-        Object obj=unserizlize(byt);
+		Object obj=null;
+		try{
+			obj=unserizlize(byt);
+		}catch(Exception e){
+			throw new NotAcceptableException("Redis中没有该sessionId");
+		}
         if(obj instanceof Login){
         	return (Login) obj;
         }

@@ -38,7 +38,7 @@ public class UserRest {
 	 * @return
 	 */
     @GET
-    public Response getusers(@HeaderParam(value="sessionId") String sessionId,
+    public Response getUsers(@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
@@ -64,7 +64,7 @@ public class UserRest {
      * @return
      */
     @POST
-    public Response adduser(String user,
+    public Response addUser(String user,
     		@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
@@ -92,7 +92,7 @@ public class UserRest {
      */
     @GET
     @Path("/{user_id}/")
-    public Response getuser(@PathParam("user_id")String user_id,
+    public Response getUser(@PathParam("user_id")String user_id,
     		@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
@@ -120,7 +120,7 @@ public class UserRest {
      */
     @PUT
     @Path("/{user_id}/")
-    public Response updateuser(String user,
+    public Response updateUser(String user,
     		@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
@@ -148,7 +148,7 @@ public class UserRest {
      */
     @DELETE
     @Path("/{user_id}/")
-    public Response deleteuser(@PathParam("user_id")String user_id,
+    public Response deleteUser(@PathParam("user_id")String user_id,
     		@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;

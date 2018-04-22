@@ -125,7 +125,6 @@ public class UserServiceImpl implements UserService {
 		//3、获取数据
 		User user = userDao.getUser(user_id);
 		responseMap.put("data", user);
-		responseMap.put("count", 1);
 		responseMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
 		return gson.toJson(responseMap);
 	}

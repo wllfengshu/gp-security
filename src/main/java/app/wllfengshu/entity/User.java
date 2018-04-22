@@ -16,6 +16,7 @@ public class User implements Serializable{
 	private String tenant_id;
 	private String username;
 	private String password;
+	private String sys;//标志用户可以使用什么系统
 	private List<Role> roles;
 	public String getId() {
 		return id;
@@ -88,6 +89,12 @@ public class User implements Serializable{
 	}
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+	public String getSys() {
+		return sys;
+	}
+	public void setSys(String sys) {
+		this.sys = sys;
 	}
 	
 }

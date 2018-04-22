@@ -35,8 +35,11 @@ public class LoginServiceImpl implements LoginService {
 		User userTemp=null;
 		String username=null;
 		String password=null;
+		String token=null;//用于判断对应的角色登录才能登录对应的系统
 		try{
 			userJson=JSONObject.fromObject(user);
+			token=userJson.getString("token");
+			userJson.remove("token");//必须移除
 			userTemp=(User) JSONObject.toBean(userJson,User.class);
 			username=userTemp.getUsername();
 			password=userTemp.getPassword();
@@ -53,19 +56,26 @@ public class LoginServiceImpl implements LoginService {
 			loginEntity.setId(sessionId);//login的id就是sessionId
 			loginEntity.setPastTime(System.currentTimeMillis());
 			loginEntity.setUser(userEntity);
+			//1.1对登录者角色进行控制
+			if (!token.equals(loginEntity.getUser().getSys())) {
+				throw new NotAcceptableException("权限异常");
+			}
 			//4、把上述数据都存放在Redis中
 			try{
 				RedisUtils.putLogin(loginEntity);
 			}catch(Exception e){
 				System.out.println("Redis异常");
+				throw new NotAcceptableException("Redis异常");
 			}
 			//5、返回登陆成功，并把user相关信息都返回
 			responseMap.put("loginEntity", loginEntity);
 		}else{
 			//5、直接返回失败
-			responseMap.put("loginEntity", "");
+			System.out.println("登录失败");
+			throw new NotAcceptableException("登录失败");
 		}
 		responseMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
+		System.out.println(gson.toJson(responseMap));
 		return gson.toJson(responseMap);
 	}
 

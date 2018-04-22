@@ -14,6 +14,7 @@
         <result column="tenant_id" property="tenant_id" />
         <result column="username" property="username" />
         <result column="password" property="password" />
+        <result column="sys" property="sys" />
     </resultMap>
 
 	<select id="getUsers" parameterType="string" resultMap="userList" >
@@ -29,7 +30,7 @@
         insert into 
         	t_user
         values
-        	(#{user.id},#{user.email},#{user.sex},#{user.last_activity_time},#{user.login_name},#{user.domain},#{user.phone},#{user.status},#{user.tenant_id},#{user.username},#{user.password})
+        	(#{user.id},#{user.email},#{user.sex},#{user.last_activity_time},#{user.login_name},#{user.domain},#{user.phone},#{user.status},#{user.tenant_id},#{user.username},#{user.password},#{user.sys})
     </insert>
 
 	<select id="getUser" parameterType="String" resultType="app.wllfengshu.entity.User" >

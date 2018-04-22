@@ -33,6 +33,9 @@ public class LoginRest {
     @POST
     public Response login(String user,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin","*");
+        response.setHeader("Access-Control-Allow-Methods","GET,POST,PUT,OPTIONS");
+        response.setHeader("Access-Control-Allow-Credentials","true");
 		String responseStr = null;
 		try{
 			responseStr=loginService.login(user);

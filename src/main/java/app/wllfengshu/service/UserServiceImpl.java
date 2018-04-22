@@ -118,8 +118,8 @@ public class UserServiceImpl implements UserService {
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		//1、使用sessionId去redis中查询Login的bean
 		Login loginEntity =RedisUtils.getLogin(sessionId);
-		//1.1判断角色，该操作租户管理员、坐席操作
-		checkRole(loginEntity, new String[]{"tm","crm"});
+		//1.1判断角色，该操作租户管理员、坐席、质检员操作
+		checkRole(loginEntity, new String[]{"tm","agent","qc"});
 		//2、检查登陆
 		checkSessionId(loginEntity);
 		//3、获取数据
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
 		//1、使用sessionId去redis中查询Login的bean
 		Login loginEntity =RedisUtils.getLogin(sessionId);
 		//1.1判断角色，该操作租户管理员、坐席操作
-		checkRole(loginEntity, new String[]{"tm","crm"});
+		checkRole(loginEntity, new String[]{"tm","agent","qc"});
 		//2、检查登陆
 		checkSessionId(loginEntity);
 		//3、准备数据

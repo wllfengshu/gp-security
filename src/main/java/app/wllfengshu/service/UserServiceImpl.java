@@ -49,7 +49,11 @@ public class UserServiceImpl implements UserService {
 	 * @throws NotAcceptableException
 	 */
 	private void checkRole(Login loginEntity,String ... roleToken) throws NotAcceptableException{
-		String role_name = loginEntity.getUser().getRoles().get(0).getRole_name();//一个用户只有一个角色
+		User user = loginEntity.getUser();
+		if ("manage".equals(user.getSys())) {
+			return;
+		}
+		String role_name = user.getRoles().get(0).getRole_name();//一个用户只有一个角色
 		boolean success=false;//是否拥有权限的标志，默认没有权限
 		for (String strTemp : roleToken) {
 			if (strTemp.equals(role_name)) {

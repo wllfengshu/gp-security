@@ -40,9 +40,6 @@ public class UserRest {
     @GET
     public Response getUsers(@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
-    	response.setHeader("Access-Control-Allow-Origin","*");
-        response.setHeader("Access-Control-Allow-Methods","GET,POST,PUT,OPTIONS");
-        response.setHeader("Access-Control-Allow-Credentials","true");
 		String responseStr = null;
 		try{
 			responseStr=userService.getUsers(sessionId);
@@ -70,9 +67,6 @@ public class UserRest {
     public Response addUser(String user,
     		@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
-    	response.setHeader("Access-Control-Allow-Origin","*");
-        response.setHeader("Access-Control-Allow-Methods","GET,POST,PUT,OPTIONS");
-        response.setHeader("Access-Control-Allow-Credentials","true");
 		String responseStr = null;
 		try{
 			responseStr=userService.addUser(user,sessionId);
@@ -101,9 +95,6 @@ public class UserRest {
     public Response getUser(@PathParam("user_id")String user_id,
     		@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
-    	response.setHeader("Access-Control-Allow-Origin","*");
-        response.setHeader("Access-Control-Allow-Methods","GET,POST,PUT,OPTIONS");
-        response.setHeader("Access-Control-Allow-Credentials","true");
 		String responseStr = null;
 		try{
 			responseStr=userService.getUser(user_id,sessionId);
@@ -132,9 +123,6 @@ public class UserRest {
     public Response updateUser(String user,
     		@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
-    	response.setHeader("Access-Control-Allow-Origin","*");
-        response.setHeader("Access-Control-Allow-Methods","GET,POST,PUT,OPTIONS");
-        response.setHeader("Access-Control-Allow-Credentials","true");
 		String responseStr = null;
 		try{
 			responseStr=userService.updateUser(user,sessionId);//前端的user中必须包含user_id
@@ -163,9 +151,6 @@ public class UserRest {
     public Response deleteUser(@PathParam("user_id")String user_id,
     		@HeaderParam(value="sessionId") String sessionId,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
-    	response.setHeader("Access-Control-Allow-Origin","*");
-        response.setHeader("Access-Control-Allow-Methods","GET,POST,PUT,OPTIONS");
-        response.setHeader("Access-Control-Allow-Credentials","true");
 		String responseStr = null;
 		try{
 			responseStr=userService.deleteUser(user_id,sessionId);

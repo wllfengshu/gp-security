@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="app.wllfengshu.dao.RepwdDao" >
+
+	<update id="repwd" parameterType="String" >  
+        update
+        	t_user
+        set
+        	password = #{password}
+        where
+        	id = #{user_id}
+    </update>
+   
+</mapper>

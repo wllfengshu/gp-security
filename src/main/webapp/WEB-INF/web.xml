@@ -28,7 +28,15 @@
                 <!-- Redirect any calls to our jersey servlet -->
                 <url-pattern>/*</url-pattern>
         </servlet-mapping>
-		
+        
+	<filter>
+	     <filter-name>limitFilter</filter-name>
+	     <filter-class>app.wllfengshu.util.LimitFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>limitFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>		
 
 	<display-name>Archetype Created Web Application</display-name>
 		<!-- 配置Spring监听 -->

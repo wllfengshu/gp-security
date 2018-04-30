@@ -7,6 +7,9 @@ import app.wllfengshu.entity.User;
 
 @Repository
 public interface LoginDao {
-	public User login(@Param("username")String username,@Param("password")String password);
+	public User login(
+			@Param("username")String username,
+			@Param("password")String password,
+			@Param("domain")String domain);
 
 }

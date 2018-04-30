@@ -35,6 +35,7 @@
 			u.id=r.user_id
 		WHERE 
 			u.username = #{username} AND u.password = #{password}
+			<if test="!domain.equals('')">AND u.domain=#{domain}</if>
 	</select>
 
 </mapper>

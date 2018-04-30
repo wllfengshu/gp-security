@@ -32,25 +32,36 @@ public class LoginServiceImpl implements LoginService {
 			throw new NotAcceptableException("没有数据");
 		}
 		JSONObject userJson = null;
-		User userTemp=null;
+		String domain=null;
 		String username=null;
 		String password=null;
 		String token=null;//用于判断对应的角色登录才能登录对应的系统
 		try{
 			userJson=JSONObject.fromObject(user);
 			token=userJson.getString("token");
-			userJson.remove("token");//必须移除
-			userTemp=(User) JSONObject.toBean(userJson,User.class);
-			username=userTemp.getUsername();
-			password=userTemp.getPassword();
+			domain=userJson.getString("domain");
+			username=userJson.getString("username");
+			password=userJson.getString("password");
 			if (null==username || null==password) {
 				throw new NotAcceptableException("用户名或者密码为空");
+			}
+			if (null==domain || "".equals(domain)) {
+				throw new NotAcceptableException("域名不能为空");
 			}
 		}catch(Exception e){
 			throw new NotAcceptableException("数据格式错误");
 		}
 		//1去mysql中获取用户信息、角色信息、权限信息、部门信息（如果查询数据为空，直接返回登陆失败）
-		User userEntity = loginDao.login(username,password);
+		User userEntity =null;
+		if (token.equals("crm")) {
+			userEntity=loginDao.login(username,password,domain);
+		}else if (token.equals("tm")) {
+			userEntity=loginDao.login(username,password,"");
+		}else if (token.equals("manage")) {
+			userEntity=loginDao.login(username,password,"");
+		}else {
+			throw new NotAcceptableException("凭证错误");
+		}
 		if (userEntity!=null) {
 			Login loginEntity=new Login();
 			loginEntity.setId(sessionId);//login的id就是sessionId

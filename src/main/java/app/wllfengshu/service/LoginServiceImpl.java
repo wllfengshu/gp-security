@@ -45,15 +45,15 @@ public class LoginServiceImpl implements LoginService {
 			if (null==username || null==password) {
 				throw new NotAcceptableException("用户名或者密码为空");
 			}
-			if (null==domain || "".equals(domain)) {
-				throw new NotAcceptableException("域名不能为空");
-			}
 		}catch(Exception e){
 			throw new NotAcceptableException("数据格式错误");
 		}
 		//1去mysql中获取用户信息、角色信息、权限信息、部门信息（如果查询数据为空，直接返回登陆失败）
 		User userEntity =null;
 		if (token.equals("crm")) {
+			if (null==domain || "".equals(domain)) {
+				throw new NotAcceptableException("域名不能为空");
+			}
 			userEntity=loginDao.login(username,password,domain);
 		}else if (token.equals("tm")) {
 			userEntity=loginDao.login(username,password,"");

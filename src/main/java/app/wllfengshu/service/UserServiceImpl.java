@@ -119,6 +119,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public String getUser(String user_id,String sessionId) throws NotAcceptableException {
+		System.out.println("正在获取user信息"+user_id+" "+sessionId);
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		//1、使用sessionId去redis中查询Login的bean
 		Login loginEntity =RedisUtils.getLogin(sessionId);
@@ -127,7 +128,8 @@ public class UserServiceImpl implements UserService {
 		//2、检查登陆
 		checkSessionId(loginEntity);
 		//3、获取数据
-		User user = userDao.getUser(user_id);
+		User user = loginEntity.getUser();
+		System.out.println("security认证通过，已经发送user信息"+user.toString());
 		responseMap.put("data", user);
 		responseMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
 		return gson.toJson(responseMap);

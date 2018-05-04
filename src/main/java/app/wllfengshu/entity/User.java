@@ -96,5 +96,12 @@ public class User implements Serializable{
 	public void setSys(String sys) {
 		this.sys = sys;
 	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", sex=" + sex + ", last_activity_time=" + last_activity_time
+				+ ", login_name=" + login_name + ", domain=" + domain + ", phone=" + phone + ", status=" + status
+				+ ", tenant_id=" + tenant_id + ", username=" + username + ", password=" + password + ", sys=" + sys
+				+ ", roles=" + roles + "]";
+	}
 	
 }

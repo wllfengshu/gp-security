@@ -14,6 +14,7 @@ public class User implements Serializable{
 	private String phone;
 	private Integer status;
 	private String tenant_id;
+	private String org_id;
 	private String username;
 	private String password;
 	private String sys;//标志用户可以使用什么系统
@@ -96,12 +97,18 @@ public class User implements Serializable{
 	public void setSys(String sys) {
 		this.sys = sys;
 	}
+	public String getOrg_id() {
+		return org_id;
+	}
+	public void setOrg_id(String org_id) {
+		this.org_id = org_id;
+	}
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", sex=" + sex + ", last_activity_time=" + last_activity_time
 				+ ", login_name=" + login_name + ", domain=" + domain + ", phone=" + phone + ", status=" + status
-				+ ", tenant_id=" + tenant_id + ", username=" + username + ", password=" + password + ", sys=" + sys
-				+ ", roles=" + roles + "]";
+				+ ", tenant_id=" + tenant_id + ", org_id=" + org_id + ", username=" + username + ", password="
+				+ password + ", sys=" + sys + ", roles=" + roles + "]";
 	}
 	
 }

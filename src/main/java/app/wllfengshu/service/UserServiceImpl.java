@@ -1,5 +1,7 @@
 package app.wllfengshu.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,7 @@ import net.sf.json.JSONObject;
 
 @Service
 public class UserServiceImpl implements UserService {
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 	
 	@Autowired
@@ -67,7 +70,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public String getUsers(String sessionId) throws NotAcceptableException {
+	public String getUsers(String sessionId,String tenant_id,String username,int pageNo,int pageSize) throws NotAcceptableException {
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		//1、使用sessionId去redis中查询Login的bean
 		Login loginEntity =RedisUtils.getLogin(sessionId);
@@ -76,18 +79,15 @@ public class UserServiceImpl implements UserService {
 		//2、检查登陆
 		checkSessionId(loginEntity);
 		//3、获取所有user信息
-		//3.1 获取公司域名
-		String domain = loginEntity.getUser().getDomain();
-		//3.2通过domain获取当前公司的所有user
-		List<User> users = userDao.getUsers(domain);
+		List<User> users = userDao.getUsers(tenant_id,username,(pageNo-1)*pageSize,pageSize);
 		responseMap.put("data", users);
-		responseMap.put("count", users.size());
+		responseMap.put("count", userDao.getUsersCount(tenant_id,username));
 		responseMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
 		return gson.toJson(responseMap);
 	}
 	
 	@Override
-	public String addUser(String user,String sessionId) throws NotAcceptableException {
+	public String addUser(String user,String sessionId,String token) throws NotAcceptableException {
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		//1、使用sessionId去redis中查询Login的bean
 		Login loginEntity =RedisUtils.getLogin(sessionId);
@@ -95,22 +95,33 @@ public class UserServiceImpl implements UserService {
 		checkRole(loginEntity, "tm");
 		//2、检查登陆
 		checkSessionId(loginEntity);
-		//3、准备user数据
-		String id = UUID.randomUUID().toString();
-		String domain=loginEntity.getUser().getDomain();
-		String tenant_id = loginEntity.getUser().getTenant_id();
 		JSONObject userJson = null;
 		User userTemp=null;
-		try{
+		if (null!=token && ""!=token && "tm".equals(token)) {
+			//3、准备user数据
+			String id = UUID.randomUUID().toString();
+			String domain=loginEntity.getUser().getDomain();
+			String tenant_id = loginEntity.getUser().getTenant_id();
 			userJson=JSONObject.fromObject(user);
+			String roles=userJson.getString("roles");
+			System.out.println("添加的角色是"+roles);
+			userJson.remove("roles");
+			//整理数据
 			userTemp=(User) JSONObject.toBean(userJson,User.class);
 			userTemp.setId(id);
+			userTemp.setLast_activity_time(sdf.format(new Date(System.currentTimeMillis())));
 			userTemp.setDomain(domain);
 			userTemp.setStatus(1);
+			userTemp.setSex("男");
 			userTemp.setTenant_id(tenant_id);
+			userTemp.setOrg_id("1");
 			userTemp.setPassword("Aa123456");
-		}catch(Exception e){
-			throw new NotAcceptableException("数据格式错误");
+			userTemp.setSys("crm");
+			System.out.println("添加的user信息是"+userTemp.toString());
+		}else{
+			userJson=JSONObject.fromObject(user);
+			userTemp=(User) JSONObject.toBean(userJson,User.class);
+			System.out.println("添加的user信息是"+userTemp.toString());
 		}
 		userDao.addUser(userTemp);
 		responseMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
@@ -118,8 +129,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public String getUser(String user_id,String sessionId) throws NotAcceptableException {
-		System.out.println("正在获取user信息"+user_id+" "+sessionId);
+	public String getUser(String user_id,String sessionId,String token) throws NotAcceptableException {
+		System.out.println("正在获取user信息user_id="+user_id+" sessionId="+sessionId);
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		//1、使用sessionId去redis中查询Login的bean
 		Login loginEntity =RedisUtils.getLogin(sessionId);

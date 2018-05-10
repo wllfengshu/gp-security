@@ -15,22 +15,45 @@
         <result column="username" property="username" />
         <result column="password" property="password" />
         <result column="sys" property="sys" />
+        <collection property="roles" ofType="app.wllfengshu.entity.Role">  
+	        <id column="id" property="id"/>  
+	        <result column="role_explain" property="role_explain"/>  
+	        <result column="role_name" property="role_name"/>  
+	        <result column="status" property="status"/>  
+	    </collection> 
     </resultMap>
 
 	<select id="getUsers" parameterType="string" resultMap="userList" >
 		SELECT 
-			*
+			u.*,r.*
+		FROM 
+			t_user u
+		LEFT JOIN
+			t_role r
+		ON
+			u.id=r.user_id
+		WHERE 
+			u.tenant_id = #{tenant_id}
+			<if test="!username.equals('')">AND u.username=#{username} </if>
+			ORDER BY u.username asc 
+			LIMIT #{pageStart} ,#{pageEnd} 
+	</select>
+
+	<select id="getUsersCount" resultType="int" >
+		SELECT 
+			count(*)
 		FROM 
 			t_user u
 		WHERE 
-			u.domain = #{domain}
+			u.tenant_id = #{tenant_id}
+			<if test="!username.equals('')">AND u.username=#{username} </if>
 	</select>
 
 	<insert id="addUser" parameterType="app.wllfengshu.entity.User">  
         insert into 
         	t_user
         values
-        	(#{user.id},#{user.email},#{user.sex},#{user.last_activity_time},#{user.login_name},#{user.domain},#{user.phone},#{user.status},#{user.tenant_id},#{user.username},#{user.password},#{user.sys})
+        	(#{user.id},#{user.email},#{user.sex},#{user.last_activity_time},#{user.login_name},#{user.domain},#{user.phone},#{user.status},#{user.tenant_id},#{user.org_id},#{user.username},#{user.password},#{user.sys})
     </insert>
 
 	<select id="getUser" parameterType="String" resultType="app.wllfengshu.entity.User" >

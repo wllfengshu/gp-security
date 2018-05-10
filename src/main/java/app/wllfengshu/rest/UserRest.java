@@ -1,5 +1,7 @@
 package app.wllfengshu.rest;
 
+import java.net.URLDecoder;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DELETE;
@@ -9,6 +11,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -39,10 +42,13 @@ public class UserRest {
 	 */
     @GET
     public Response getUsers(@HeaderParam(value="sessionId") String sessionId,
+    		@HeaderParam(value="tenant_id") String tenant_id,
+    		@QueryParam("username") String username,
+    		@QueryParam("pageNo") int pageNo,@QueryParam("pageSize") int pageSize,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
-			responseStr=userService.getUsers(sessionId);
+			responseStr=userService.getUsers(sessionId,tenant_id,username,pageNo,pageSize);
 		}catch (NotAcceptableException e) {
 			System.out.println(e);
 			return Response.serverError().entity("{\"message\":\""+e.getMessage()+"\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(406).build();
@@ -66,15 +72,23 @@ public class UserRest {
     @POST
     public Response addUser(String user,
     		@HeaderParam(value="sessionId") String sessionId,
+    		@HeaderParam("token") String token,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
-			responseStr=userService.addUser(user,sessionId);
+			if (null!=token && ""!=token && "tm".equals(token)) {
+				responseStr=userService.addUser(user,sessionId,token);
+			}else {
+				user=user.substring(5);
+				String userSrc=URLDecoder.decode(user,"UTF-8");//注意编码和输入时一致
+				System.out.println("接受到的租户管理员信息"+userSrc);
+				responseStr=userService.addUser(userSrc,sessionId,token);
+			}
 		}catch (NotAcceptableException e) {
 			System.out.println(e);
 			return Response.serverError().entity("{\"message\":\""+e.getMessage()+"\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(406).build();
 		}catch (Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 			LogUtils.error(this, e, "# userRest-adduser,has exception #");
 			return Response.serverError().entity("{\"message\":\"has exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
 		}
@@ -94,10 +108,11 @@ public class UserRest {
     @Path("/{user_id}/")
     public Response getUser(@PathParam("user_id")String user_id,
     		@HeaderParam(value="sessionId") String sessionId,
+    		@HeaderParam("token") String token,
     		@Context HttpServletRequest request,@Context HttpServletResponse response) {
 		String responseStr = null;
 		try{
-			responseStr=userService.getUser(user_id,sessionId);
+			responseStr=userService.getUser(user_id,sessionId,token);
 		}catch (NotAcceptableException e) {
 			System.out.println(e);
 			return Response.serverError().entity("{\"message\":\""+e.getMessage()+"\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(406).build();

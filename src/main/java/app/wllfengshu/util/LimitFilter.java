@@ -55,7 +55,7 @@ public class LimitFilter implements Filter {
 
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");  
   
-        httpServletResponse.setHeader("Access-Control-Allow-Headers", "sessionid,user_id,User-Agent,Origin,Cache-Control,Content-type,Date,Server,withCredentials,AccessToken");  
+        httpServletResponse.setHeader("Access-Control-Allow-Headers", "sessionid,tenant_id,user_id,token,User-Agent,Origin,Cache-Control,Content-type,Date,Server,withCredentials,AccessToken");  
   
         httpServletResponse.setHeader("Access-Control-Allow-Credentials", "true");  
   

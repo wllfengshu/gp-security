@@ -147,6 +147,17 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public String getUserBack(String user_id,String sessionId,String token) throws NotAcceptableException {
+		System.out.println("正在获取user信息user_id="+user_id+" sessionId="+sessionId);
+		Map<String,Object> responseMap = new HashMap<String,Object>();
+		User userInfo = userDao.getUser(user_id);
+		System.out.println("security认证通过，已经发送user信息"+userInfo.toString());
+		responseMap.put("data", userInfo);
+		responseMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
+		return gson.toJson(responseMap);
+	}
+	
+	@Override
 	public String updateUser(String user,String sessionId) throws NotAcceptableException {
 		Map<String,Object> responseMap = new HashMap<String,Object>();
 		//1、使用sessionId去redis中查询Login的bean

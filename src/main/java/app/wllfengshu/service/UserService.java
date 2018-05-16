@@ -9,6 +9,8 @@ public interface UserService {
 	public String addUser(String user,String sessionId,String token) throws NotAcceptableException;
 
 	public String getUser(String user_id,String sessionId,String token) throws NotAcceptableException;
+	
+	public String getUserBack(String user_id,String sessionId,String token) throws NotAcceptableException;
 
 	public String updateUser(String user,String sessionId) throws NotAcceptableException;
 

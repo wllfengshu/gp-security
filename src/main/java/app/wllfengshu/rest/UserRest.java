@@ -126,6 +126,35 @@ public class UserRest {
     }
     
     /**
+     * @title 该方法由租户管理员点击查询用户详情
+     * @param user_id 用户ID
+     * @param sessionId
+     * @param request
+     * @param response
+     * @return
+     */
+    @GET
+    @Path("/back/{user_id}/")
+    public Response getUserBack(@PathParam("user_id")String user_id,
+    		@HeaderParam(value="sessionId") String sessionId,
+    		@HeaderParam("token") String token,
+    		@Context HttpServletRequest request,@Context HttpServletResponse response) {
+		String responseStr = null;
+		try{
+			responseStr=userService.getUserBack(user_id,sessionId,token);
+		}catch (NotAcceptableException e) {
+			System.out.println(e);
+			return Response.serverError().entity("{\"message\":\""+e.getMessage()+"\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(406).build();
+		}catch (Exception e) {
+			System.out.println(e);
+			LogUtils.error(this, e, "# userRest-getuser,has exception #");
+			return Response.serverError().entity("{\"message\":\"has exception\",\"timestamp\":\""+System.currentTimeMillis()+"\"}").status(500).build();
+		}
+		return Response.ok(responseStr, MediaType.APPLICATION_JSON)
+        		.status(200).build();
+    }
+    
+    /**
      * @title 修改用户信息
      * @param user 用户信息数据
      * @param sessionId
